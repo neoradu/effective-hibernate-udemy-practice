@@ -1,6 +1,7 @@
 package com.arnoldgalovics.lazyloading.practice.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,7 +18,9 @@ public class Product {
     private String name;
     private int stock;
 
-    @OneToMany(mappedBy = "product")
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "product")
+    //@OneToMany(fetch=FetchType.EAGER, mappedBy = "product")
     private List<ProductReview> reviews;
 
     private Product() {
