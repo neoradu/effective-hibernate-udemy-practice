@@ -12,5 +12,4 @@ import com.arnoldgalovics.lazyloading.practice.domain.Product;
 public interface ProductRepository extends JpaRepository<Product,Integer> {
     @Query("FROM Product products JOIN FETCH products.reviews")
     List<Product> retrieveAll();
-
 }

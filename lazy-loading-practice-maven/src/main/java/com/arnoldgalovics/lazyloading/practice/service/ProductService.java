@@ -2,11 +2,14 @@ package com.arnoldgalovics.lazyloading.practice.service;
 
 import com.arnoldgalovics.lazyloading.practice.domain.Product;
 import com.arnoldgalovics.lazyloading.practice.domain.ProductReview;
+
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -30,6 +33,7 @@ public class ProductService {
     @Transactional
     public Collection<ProductReview> getReviewsForProduct(int productId) {
         Product product = entityManager.find(Product.class, productId);
+        Hibernate.initialize(product.getReviews());
         return product.getReviews();
     }
 
@@ -44,7 +48,9 @@ public class ProductService {
      */
     @Transactional
     public int getAverageRatingForProduct(int productId) {
-        Product product = entityManager.find(Product.class, productId);
+        TypedQuery<Product> productQ = entityManager.createQuery("FROM Product product JOIN FETCH product.reviews WHERE product.id= :id", Product.class);
+        productQ.setParameter("id", productId);
+        Product product = productQ.getSingleResult();
         List<ProductReview> reviews = product.getReviews();
         int sum = 0;
         for (ProductReview review : reviews) {
@@ -61,7 +67,7 @@ public class ProductService {
      */
     @Transactional
     public int getOverallAverageRating() {
-            List<Product> products = entityManager.createQuery("FROM Product", Product.class).getResultList();
+            List<Product> products = entityManager.createQuery("FROM Product products JOIN FETCH products.reviews", Product.class).getResultList();
         int sum = 0;
         int countOfReviews = 0;
         for (Product product : products) {
