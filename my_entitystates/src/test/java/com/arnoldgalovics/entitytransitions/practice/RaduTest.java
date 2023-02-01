@@ -5,19 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.arnoldgalovics.entitytransitions.practice.domain.Product;
-import com.arnoldgalovics.entitytransitions.practice.service.ProductRepository;
+import com.arnoldgalovics.entitytransitions.practice.service.MyProductRepository;
 
 @SpringBootTest
 public class RaduTest {
 
     @Autowired 
-    ProductRepository productRepository;
+    MyProductRepository productRepository;
+    
+    //@Test
+    public void testEntityManagerMerge() {
+        productRepository.decrementProductStock(1, 2);  
+    }
     
     @Test
-    public void testEntityManagerMerge() {
-        Product p = productRepository.find(1);
-        p.setStock(p.getStock() - 1);
-        productRepository.save(p);
-        
+    public void testEntityManagerMerge02() {
+        productRepository.create(3, 13);
     }
+    
 }

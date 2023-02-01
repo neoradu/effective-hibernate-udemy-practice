@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * <br><br>
  * Further reading: <a href="https://blog.arnoldgalovics.com/configuring-a-datasource-proxy-in-spring-boot/">https://blog.arnoldgalovics.com/configuring-a-datasource-proxy-in-spring-boot/</a>
  */
-//@Component
+@Component
 public class DataSourceProxyBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
