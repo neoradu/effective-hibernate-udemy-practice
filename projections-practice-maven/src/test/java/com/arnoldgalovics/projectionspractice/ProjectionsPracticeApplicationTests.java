@@ -26,7 +26,8 @@ class ProjectionsPracticeApplicationTests {
 
 		// calculate the overall average
 		Collection<String> productNames = productService.getProductNames();
-
+		
+		//Collection<String> productNames = expectedProductNames;
 		// verify that the product names are equal with the expected one
 		assertThat(productNames).containsExactlyInAnyOrderElementsOf(expectedProductNames);
 		// verify that only the necessary information is queried back

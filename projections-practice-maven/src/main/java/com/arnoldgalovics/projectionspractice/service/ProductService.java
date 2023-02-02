@@ -2,11 +2,18 @@ package com.arnoldgalovics.projectionspractice.service;
 
 
 import com.arnoldgalovics.projectionspractice.domain.Product;
+import com.arnoldgalovics.projectionspractice.domain.ProductInterfaceForProjection;
+import com.arnoldgalovics.projectionspractice.domain.ProductProjection;
+import com.arnoldgalovics.projectionspractice.repository.ProductRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +25,9 @@ import java.util.stream.Collectors;
 public class ProductService {
     @PersistenceContext
     private EntityManager entityManager;
+    
+    @Autowired
+    ProductRepository productRepository;
 
     /**
      * The method returns all the product names available in the underlying database.
@@ -25,7 +35,8 @@ public class ProductService {
      */
     @Transactional
     public Collection<String> getProductNames() {
-        List<Product> products = entityManager.createQuery("FROM Product", Product.class).getResultList();
-        return products.stream().map(Product::getName).collect(Collectors.toList());
+        //List<Product> products = entityManager.createQuery("FROM Product", Product.class).getResultList();
+        List<ProductInterfaceForProjection> products = productRepository.findAllProjectedBy();
+        return products.stream().map(ProductInterfaceForProjection::getName).collect(Collectors.toList());
     }
 }
