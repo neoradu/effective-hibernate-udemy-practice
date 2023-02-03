@@ -4,11 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
+
 /**
  * A very simple representation of a Product that is used for demonstration purposes.
  */
 @Entity
 @Table(name = "opt_dist_products")
+@DynamicUpdate
+@OptimisticLocking(type=OptimisticLockType.DIRTY)
 public class OptimisticDistinctProduct {
     @Id
     private int id;
